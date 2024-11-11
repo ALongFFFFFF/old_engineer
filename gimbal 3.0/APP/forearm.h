@@ -122,7 +122,7 @@ typedef struct
 
     #define left_rocker_right              (forearm.rc_data->rc.ch[2] > 0)
     #define left_rocker_left            (forearm.rc_data->rc.ch[2] < 0)
-    #define left_rocker_mid             (forearm.rc_data->rc.ch[2] == 0 || forearm.rc_data->rc.ch[3] == 0)
+    #define left_rocker_mid             (forearm.rc_data->rc.ch[2] == 0 && forearm.rc_data->rc.ch[3] == 0)
 
     #define left_rocker_up              (forearm.rc_data->rc.ch[3] > 0)
     #define left_rocker_down            (forearm.rc_data->rc.ch[3] < 0)
@@ -297,7 +297,7 @@ fp32 forearm_PID_calc(pid_strt *pid, int16_t ref, int16_t set);
 void forearm_PID_init(void);
 void forearm_init(void);
 void auto_ore(void);
-void PhotoSpin_set_sent(void);
-void PhotoSpin_output();                  //控制图传舵机
+//void PhotoSpin_set_sent(void);
+//void PhotoSpin_output();                  //控制图传舵机
 
 #endif

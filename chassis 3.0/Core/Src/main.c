@@ -97,7 +97,7 @@ int main(void)
   MX_TIM1_Init();
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
-		remote_control_init();
+    remote_control_init();
     can_filter_init();
     HAL_TIM_Base_Start(&htim1);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);

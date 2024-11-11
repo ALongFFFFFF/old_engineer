@@ -87,7 +87,7 @@ typedef struct
 
     #define left_rocker_up              (strt.rc_data->rc.ch[3] > 0)
     #define left_rocker_down            (strt.rc_data->rc.ch[3] < 0)
-    #define left_rocker_mid             (strt.rc_data->rc.ch[3] == 0)
+    #define left_rocker_mid             (strt.rc_data->rc.ch[3] == 0&&strt.rc_data->rc.ch[2]==0)
 
     #define dial_forward                (strt.rc_data->rc.ch[4] > 0)
     #define dial_reserve                (strt.rc_data->rc.ch[4] < 0)
@@ -144,13 +144,13 @@ typedef struct
 
 
 //一号电机PID
-float LIFT_LEFT_KP     =   12.0f;
+float LIFT_LEFT_KP     =   1.0f;
 float LIFT_LEFT_KI     =   0.0f;
 float LIFT_LEFT_KD     =   0.0f;
 float LIFT_LEFT_MOUT   =   16000.0f;
 float LIFT_LEFT_MIOUT  =   8000.0f;
 //二号电机PID
-float LIFT_RIGHT_KP     =   12.0f;
+float LIFT_RIGHT_KP     =   1.0f;
 float LIFT_RIGHT_KI     =   0.0f;
 float LIFT_RIGHT_KD     =   0.0f;
 float LIFT_RIGHT_MOUT   =   16000.0f;

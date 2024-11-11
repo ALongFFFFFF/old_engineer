@@ -9,7 +9,7 @@ void forearm_task(void const *argument)
     while(1)
     {
         forearm_set_mode();     //更改遥控器控制模式
-        PhotoSpin_set_sent();   //图传控制
+        //PhotoSpin_set_sent();   //图传控制
         forearm_control();      //更改电机控制模式
         forearm_can_send();
         forearm_stretch_can_send();     //CAN协议发送
@@ -450,131 +450,130 @@ void forearm_set_mode(void)
     // }
 
     //cnm图传视角移动
-    if(forearm_keyboard == 0)
-    {
-        // 遥控器模式
-        if (left_switch_is_mid && right_switch_is_down)
-        {
-            //起始赋值
-            if(left_rocker_up)
-            {
-                photospin_state = LOOK_UP;
-            }
-            if(left_rocker_down)
-            {
-                photospin_state = LOOK_DOWN;
-            }
-            if(left_rocker_right)
-            {
-                photospin_state = LOOK_RIGHT;
-            }
-            if(left_rocker_left)
-            {
-                photospin_state = LOOK_LEFT;
-            }
-        }
-        else
-        {
-            photospin_state =   stop;
-        }
-    }else{
-        // 键盘模式
-        if (forearm.rc_data->key.v == KEY_PRESSED_OFFSET_X)
-        {
-            //起始赋值
-            if(forearm.rc_data->mouse.y < 0)
-            {
-                photospin_state = LOOK_UP;
-            }
-            if(forearm.rc_data->mouse.y > 0)
-            {
-                photospin_state = LOOK_DOWN;
-            }
-            if(forearm.rc_data->mouse.y == 0)
-            {
-                photospin_state = stop;
-            }
-            if(forearm.rc_data->mouse.x < 0)
-            {
-                photospin_state = LOOK_LEFT;
-            }
-            if(forearm.rc_data->mouse.x > 0)
-            {
-                photospin_state = LOOK_RIGHT;
-            }
-            if(forearm.rc_data->mouse.x == 0)
-            {
-                photospin_state = stop;
-            }
-        }
-        else
-        {
-            photospin_state =  stop;
-        }
-    }
-
+//     if(forearm_keyboard == 0)
+//     {
+//         // 遥控器模式
+//         if (left_switch_is_mid && right_switch_is_down)
+//         {
+//             //起始赋值
+//             if(left_rocker_up)
+//             {
+//                 photospin_state = LOOK_UP;
+//             }
+//             if(left_rocker_down)
+//             {
+//                 photospin_state = LOOK_DOWN;
+//             }
+//             if(left_rocker_right)
+//             {
+//                 photospin_state = LOOK_RIGHT;
+//             }
+//             if(left_rocker_left)
+//             {
+//                 photospin_state = LOOK_LEFT;
+//             }
+//         }
+//         else
+//         {
+//             photospin_state =   stop;
+//         }
+//     }else{
+//         // 键盘模式
+//         if (forearm.rc_data->key.v == KEY_PRESSED_OFFSET_X)
+//         {
+//             //起始赋值
+//             if(forearm.rc_data->mouse.y < 0)
+//             {
+//                 photospin_state = LOOK_UP;
+//             }
+//             if(forearm.rc_data->mouse.y > 0)
+//             {
+//                 photospin_state = LOOK_DOWN;
+//             }
+//             if(forearm.rc_data->mouse.y == 0)
+//             {
+//                 photospin_state = stop;
+//             }
+//             if(forearm.rc_data->mouse.x < 0)
+//             {
+//                 photospin_state = LOOK_LEFT;
+//             }
+//             if(forearm.rc_data->mouse.x > 0)
+//             {
+//                 photospin_state = LOOK_RIGHT;
+//             }
+//             if(forearm.rc_data->mouse.x == 0)
+//             {
+//                 photospin_state = stop;
+//             }
+//         }
+//         else
+//         {
+//             photospin_state =  stop;
+//         }
+//     }
 }
-void PhotoSpin_set_sent(void){
-    //图传 PITCH轴
-    if (photo_pitch.spin_state ==   LOOK_MID)
-    {
+// void PhotoSpin_set_sent(void){
+//     //图传 PITCH轴
+//     if (photo_pitch.spin_state ==   LOOK_MID)
+//     {
 
-    }else if (photo_pitch.spin_state ==  LOOK_UP)
-    {   
-        photo_pitch.photo_angle_target += PHOTOSPIN_PITCH_SPEED;
+//     }else if (photo_pitch.spin_state ==  LOOK_UP)
+//     {   
+//         photo_pitch.photo_angle_target += PHOTOSPIN_PITCH_SPEED;
 
-    }else if (photo_pitch.spin_state ==  LOOK_DOWN)
-    {
-        photo_pitch.photo_angle_target -= PHOTOSPIN_PITCH_SPEED;
-    }
+//     }else if (photo_pitch.spin_state ==  LOOK_DOWN)
+//     {
+//         photo_pitch.photo_angle_target -= PHOTOSPIN_PITCH_SPEED;
+//     }
     
-    if (photo_pitch.photo_angle_target > PS_PITCH_ANGLE_MAX )
-    {
-        photo_pitch.photo_angle_target = PS_PITCH_ANGLE_MAX;
+//     if (photo_pitch.photo_angle_target > PS_PITCH_ANGLE_MAX )
+//     {
+//         photo_pitch.photo_angle_target = PS_PITCH_ANGLE_MAX;
 
-    }if (photo_pitch.photo_angle_target < PS_PITCH_ANGLE_MIN)
-    {
-        photo_pitch.photo_angle_target = PS_PITCH_ANGLE_MIN;
-    }
+//     }if (photo_pitch.photo_angle_target < PS_PITCH_ANGLE_MIN)
+//     {
+//         photo_pitch.photo_angle_target = PS_PITCH_ANGLE_MIN;
+//     }
 
-    HAL_Delay(PS_DELAY);
+//     HAL_Delay(PS_DELAY);
 
-    //图传 YAW轴
-    if (photo_yaw.spin_state ==   LOOK_MID)
-    {
+//     //图传 YAW轴
+//     if (photo_yaw.spin_state ==   LOOK_MID)
+//     {
 
-    }else if (photo_yaw.spin_state ==  LOOK_UP)
-    {   
-        photo_yaw.photo_angle_target += PHOTOSPIN_YAW_SPEED;
+//     }else if (photo_yaw.spin_state ==  LOOK_UP)
+//     {   
+//         photo_yaw.photo_angle_target += PHOTOSPIN_YAW_SPEED;
 
-    }else if (photo_yaw.spin_state ==  LOOK_DOWN)
-    {
-        photo_yaw.photo_angle_target -= PHOTOSPIN_YAW_SPEED;
-    }
+//     }else if (photo_yaw.spin_state ==  LOOK_DOWN)
+//     {
+//         photo_yaw.photo_angle_target -= PHOTOSPIN_YAW_SPEED;
+//     }
     
-    if (photo_yaw.photo_angle_target > PS_YAW_ANGLE_MAX )
-    {
-        photo_yaw.photo_angle_target = PS_YAW_ANGLE_MAX;
+//     if (photo_yaw.photo_angle_target > PS_YAW_ANGLE_MAX )
+//     {
+//         photo_yaw.photo_angle_target = PS_YAW_ANGLE_MAX;
 
-    }
-    if (photo_yaw.photo_angle_target < PS_YAW_ANGLE_MIN)
-    {
-        photo_yaw.photo_angle_target = PS_YAW_ANGLE_MIN;
-    }
+//     }
+//     if (photo_yaw.photo_angle_target < PS_YAW_ANGLE_MIN)
+//     {
+//         photo_yaw.photo_angle_target = PS_YAW_ANGLE_MIN;
+//     }
 
-    HAL_Delay(PS_DELAY);
+//     HAL_Delay(PS_DELAY);
     
-    __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_1,photo_pitch.photo_angle_target);
-    __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_2,photo_yaw.photo_angle_target);
+//     __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_1,photo_pitch.photo_angle_target);
+//     __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_2,photo_yaw.photo_angle_target);
 
-}
+// }
 
-void PhotoSpin_init(void)
-{
-    photo_yaw.photo_angle_target = PS_PITCH_MID_ANGLE;
-    photo_pitch.photo_angle_target = PS_YAW_MID_ANGLE;
+// void PhotoSpin_init(void)
+// {
+//     photo_yaw.photo_angle_target = PS_PITCH_MID_ANGLE;
+//     photo_pitch.photo_angle_target = PS_YAW_MID_ANGLE;
     
-}
+// }
 
 //更改电机控制模式
 void forearm_control(void)
@@ -617,7 +616,7 @@ void forearm_control(void)
              //if (-10 >=forearm.can.stretch_speed_R -forearm.can.stretch_target || forearm.can.stretch_speed_R -forearm.can.stretch_target >=10)
          //{
              /* code */
-             forearm.can.stretch_R = -(int16_t)forearm_PID_calc(&forearm_PID[6],forearm.can.stretch_speed_R,forearm.can.stretch_target);
+             forearm.can.stretch_R = - forearm.can.stretch_L;//(int16_t)forearm_PID_calc(&forearm_PID[6],forearm.can.stretch_speed_R,-forearm.can.stretch_target);
              //ecd_format(forearm.can.stretch_R);
          //}
     //}
@@ -942,8 +941,8 @@ void forearm_PID_init(void)
     forearm_PID[4].Kd = FOREARM_STRETCH_R_KD;
     forearm_PID[4].max_out = FOREARM_STRETCH_R_MOUT;
     forearm_PID[4].max_iout = FOREARM_STRETCH_R_MIOUT;
-    forearm_PID[4].Dbuf[0] = forearm_PID[0].Dbuf[1] = forearm_PID[0].Dbuf[2] = 0.0f;
-    forearm_PID[4].error[0] = forearm_PID[0].error[1] = forearm_PID[0].error[2] = forearm_PID[0].Pout = forearm_PID[0].Iout = forearm_PID[0].Dout = forearm_PID[0].out = 0.0f;
+    forearm_PID[4].Dbuf[0] = forearm_PID[4].Dbuf[1] = forearm_PID[0].Dbuf[2] = 0.0f;
+    forearm_PID[4].error[0] = forearm_PID[4].error[1] = forearm_PID[0].error[2] = forearm_PID[0].Pout = forearm_PID[0].Iout = forearm_PID[0].Dout = forearm_PID[0].out = 0.0f;
 
 
     //addmotor08
@@ -1028,36 +1027,36 @@ void software_reset()
     }
 }
 
-void PhotoSpin_output(){
+// void PhotoSpin_output(){
 
 
-    if(photo_pitch.spin_state == LOOK_UP){
+//     if(photo_pitch.spin_state == LOOK_UP){
 
-		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, photo_pitch.photo_angle_target);
+// 		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, photo_pitch.photo_angle_target);
 
-    }else if (photo_pitch.spin_state == LOOK_MID){
+//     }else if (photo_pitch.spin_state == LOOK_MID){
 
-		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, PS_PITCH_MID_ANGLE);
+// 		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, PS_PITCH_MID_ANGLE);
 
-    }else if (photo_pitch.spin_state == LOOK_DOWN){
+//     }else if (photo_pitch.spin_state == LOOK_DOWN){
 
-        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, photo_pitch.photo_angle_target);
+//         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, photo_pitch.photo_angle_target);
 
-    }
+//     }
 
-    if(photo_yaw.spin_state == LOOK_UP){
+//     if(photo_yaw.spin_state == LOOK_UP){
 
-		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1,photo_yaw.photo_angle_target);
+// 		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1,photo_yaw.photo_angle_target);
 
-    }else if (photo_yaw.spin_state == LOOK_MID){
+//     }else if (photo_yaw.spin_state == LOOK_MID){
 
-		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, PS_YAW_MID_ANGLE);
+// 		__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, PS_YAW_MID_ANGLE);
 
-    }else if (photo_yaw.spin_state == LOOK_DOWN){
+//     }else if (photo_yaw.spin_state == LOOK_DOWN){
 
-        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, photo_yaw.photo_angle_target);
+//         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, photo_yaw.photo_angle_target);
 
-    }
+//     }
     
  
-}
+// }

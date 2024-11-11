@@ -65,29 +65,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         // }
         switch (rx_header.StdId)
         {
-            case CAN_LIFT_LEFT_ID:
-            {
-                static uint8_t i = 0;
-                //get motor id
-                i = rx_header.StdId - CAN_LIFT_LEFT_ID + 4;
-                get_motor_measure(&motor[i], rx_data);
-                // if(motor[i].ecd - motor[i].last_ecd > 5000)
-                // {
-                //     motor[i].round--;
-                // }
-                // if(motor[i].ecd - motor[i].last_ecd < -5000)
-                // {
-                //     motor[i].round++;
-                // }
-                break;
-            }
+//            case CAN_LIFT_LEFT_ID:
+//            {
+//                static uint8_t i = 0;
+//                //get motor id
+//                i = rx_header.StdId - CAN_LIFT_LEFT_ID ;
+//                get_motor_measure(&motor[i], rx_data);
+//                // if(motor[i].ecd - motor[i].last_ecd > 5000)
+//                // {
+//                //     motor[i].round--;
+//                // }
+//                // if(motor[i].ecd - motor[i].last_ecd < -5000)
+//                // {
+//                //     motor[i].round++;
+//                // }
+//                break;
+//            }
             case CAN_LIFT_RIGHT_ID: //?????????????????
             case CAN_ORE_LEFT_ID:
             case CAN_ORE_RIGHT_ID:
             {
                 static uint8_t i = 0;
                 //get motor id
-                i = rx_header.StdId - CAN_LIFT_LEFT_ID + 4;
+                i = rx_header.StdId - CAN_LIFT_LEFT_ID +4;
                 get_motor_measure(&motor[i], rx_data);
                 break;
             }
@@ -119,7 +119,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 void send_rc_board_com(int16_t ch_0, int16_t ch_2, int16_t ch_3, uint16_t v)
 {
-    //Êý¾ÝÌî³ä
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     top_send.ch_0 = ch_0;
     top_send.ch_2 = ch_2;
     top_send.ch_3 = ch_3;

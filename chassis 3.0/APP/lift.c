@@ -1,4 +1,6 @@
 #include "lift.h"
+#include "struct_typedef.h"
+
 lift_pid_strt lift_PID[4];
 int16_t *lift_Reset_key;
 strt_t    strt;
@@ -12,15 +14,15 @@ void Lifting_task(void const * argument)
     {
         // strt.lift_lenth = 1.0*(strt.motor_measure[0]->round*360)/19+1.0*(strt.motor_measure[0]->ecd*360)/19/8192;
         
-        lift_set_mode();
-        lift_control();
+        // lift_set_mode();
+        // lift_control();
         ore_set_mode();
         ore_control();
         vTaskDelay(1);
         can_send();
-        pump_contorl_send();
+        //pump_contorl_send();
         // ccan_send();
-        vTaskDelay(3);
+        vTaskDelay(20);
     }
 }
 
@@ -126,7 +128,7 @@ void ore_set_mode(void)
 {
     if(lift_keyboard == 0)
     {
-        if(left_switch_is_mid && right_switch_is_up)     
+        if(left_switch_is_down && right_switch_is_mid)     
         {
         if (left_rocker_up)//strt.sensor_data.photogate_1
         {
@@ -235,6 +237,8 @@ void lift_control(void)
 
 void ore_control(void)
 {
+    strt.can.ore.left_speed    = strt.motor_measure[2]->speed_rpm;
+    strt.can.ore.right_speed   = strt.motor_measure[3]->speed_rpm;
     if (ore_state_is_stop)
     {
         strt.can.ore.left_target   =   0;
@@ -243,17 +247,17 @@ void ore_control(void)
 
     if (ore_state_is_in)
     {
-        strt.can.ore.left_target   =   10000;
-        strt.can.ore.right_target  =   -10000;
+        strt.can.ore.left_target   =   400;
+        strt.can.ore.right_target  =   -400;
     }
 
     if (ore_state_is_out)
     {
-        strt.can.ore.left_target   =   -10000;
-        strt.can.ore.right_target  =   10000;
+        strt.can.ore.left_target   =   -400;
+        strt.can.ore.right_target  =   400;
     }
     strt.can.ore.left = (int16_t)lift_PID_calc(&lift_PID[2],strt.can.ore.left_speed,strt.can.ore.left_target);
-    strt.can.ore.right = (int16_t)lift_PID_calc(&lift_PID[3],strt.can.ore.right_speed,strt.can.ore.right_target);
+    strt.can.ore.right = -(int16_t)lift_PID_calc(&lift_PID[3],strt.can.ore.right_speed,strt.can.ore.right_target);
 }
 
 // void sensor(void)
@@ -297,10 +301,10 @@ void can_send(void)
     // lift_can_send_data[5] = 0;
     // lift_can_send_data[6] = 0 >> 8;
     // lift_can_send_data[7] = 0;
-    lift_can_send_data[4] = strt.can.lift.right >> 8;
-    lift_can_send_data[5] = strt.can.lift.right;
-    lift_can_send_data[6] = strt.can.lift.left >> 8;
-    lift_can_send_data[7] = strt.can.lift.left;
+    lift_can_send_data[4] = (int16_t)strt.can.ore.right >> 8;
+    lift_can_send_data[5] = (int16_t)strt.can.ore.right;
+    lift_can_send_data[6] = (int16_t)strt.can.ore.left >> 8;
+    lift_can_send_data[7] = (int16_t)strt.can.ore.left;
 
     HAL_CAN_AddTxMessage(&hcan1, &can_tx_message, lift_can_send_data, &send_mail_box);
 }
@@ -423,12 +427,12 @@ void lift_init(void)
     strt.rc_data    =   get_remote_control_point();
     
     //状态初始化
-    strt.pump_state = close;
+    //strt.pump_state = close;
     strt.can.lift.state = stop;
     strt.can.ore.state = stop;
 
     //电机初始化
-    for (uint8_t i = 0; i < 6; i++)
+    for (uint8_t i = 2; i < 4; i++)
     {
         strt.motor_measure[i] = get_motor_measure_point(i+4);
     }
@@ -441,15 +445,15 @@ void lift_init(void)
     strt.lift_lenth = 0.0f;
 }
 
-//气泵控制
-void pump_contorl_send(void){
-        if (strt.pump_state == open)
-        {
-            HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_SET);
-        }
-        else if (strt.pump_state == close)
-        {
-            HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_RESET); 
-        } 
+// //气泵控制
+// void pump_contorl_send(void){
+//         if (strt.pump_state == open)
+//         {
+//             HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_SET);
+//         }
+//         else if (strt.pump_state == close)
+//         {
+//             HAL_GPIO_WritePin(GPIOB,GPIO_PIN_12,GPIO_PIN_RESET); 
+//         } 
 
-}
+// }
